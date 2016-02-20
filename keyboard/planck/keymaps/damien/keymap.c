@@ -99,3 +99,5 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) { 
   }
   return MACRO_NONE;
 }
+
+// TODO check matrix_scan_user to animate lighting
