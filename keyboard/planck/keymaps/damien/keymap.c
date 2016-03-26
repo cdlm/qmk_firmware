@@ -13,6 +13,7 @@
 #define _L_ 3
 #define _R_ 4
 #define _X_ 5
+#define LCK 6
 
 // Make KC_TRNS less visually obtrusive to make actual mappings more obvious
 #define _______ KC_TRNS
@@ -53,7 +54,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     {BL_STEP, _______, _______, _______, _______, _______, _______, _______, _______, KC_VOLD, KC_VOLU, KC_MUTE},
     {_______, _______, _______, _______, _______, DEBUG,   RESET,   _______, _______, KC_MPRV, KC_MNXT, KC_MPLY},
     {_______, _______, _______, _______, _______, KC_BTLD, _______, _______, _______, _______, _______, _______},
-    {KC_PWR,  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______}
+    {M(LCK),  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______}
   }
 };
 
@@ -89,6 +90,11 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
   case _L_:
   case _R_:
     update_combi_layer(record, _X_, id);
+    break;
+  case LCK:
+    if (record->event.pressed) {
+      return MACRO(D(LSFT), D(LCTL), T(EJCT), U(LCTL), U(LSFT), END);
+    }
     break;
   }
   return MACRO_NONE;
