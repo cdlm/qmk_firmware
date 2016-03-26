@@ -100,17 +100,16 @@ static uint16_t animation_timer;
 static uint16_t animate = 0;
 void animate_backlight(uint16_t delta);
 
-void * matrix_init_user(void) {
+void matrix_init_user(void) {
   animation_timer = timer_read();
 }
 
-void * matrix_scan_user(void) { // called approx. every millisecond
+void matrix_scan_user(void) { // called approx. every millisecond
   uint16_t delta = timer_elapsed(animation_timer);
   if (delta > (1000 / ANIM_FPS)) {
     animation_timer = timer_read();
     animate_backlight(delta);
   }
-  return NULL; // facepalm.
 }
 
 #define CHANNEL OCR1C
