@@ -112,6 +112,8 @@ void animate_backlight(uint16_t delta);
 uint16_t sat_add(uint16_t a, uint16_t b);
 uint16_t sat_sub(uint16_t a, uint16_t b);
 
+/* hooking into the keyboard's event processing
+ */
 void matrix_init_user(void) {
   animation_timer = timer_read();
 }
@@ -139,20 +141,18 @@ void backlight_adjust(uint16_t level) {
 }
 
 // linear sawtooth / ramp animation function
-void step_ramp(uint16_t *value, uint16_t delta) {
-  *value += delta << 3;
+void step_ramp(uint16_t *animated_value, uint16_t delta) {
+  *animated_value += delta << 3;
 }
 
-// continuously decay to zero
-// animate should be reset to a high value at each keypress fot this to have any interest :)
-void step_decay(uint16_t *value, uint16_t delta) {
-  uint16_t decay = *value >> 6;
-  *value = (*value >= decay) ? *value - decay : 0;
+// asymptotically converge towards target value
+void step_converge(uint16_t *value, uint16_t delta) {
+  uint16_t decay = (0xffff - *value) >> 6 + 1;
+  *value = sat_add(*value, decay);
 }
 
 void animate_backlight(uint16_t delta) {
-  // step_ramp(&animate, delta);
-  step_decay(&animate, delta);
+  step_converge(&animate, delta);
 
   uint8_t interp_index = animate >> 8;
   uint8_t interp_mu = animate & 0xFF;
