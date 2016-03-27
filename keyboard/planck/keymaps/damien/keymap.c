@@ -109,6 +109,8 @@ extern const uint16_t backlight_gamma[]; // values below
 static uint16_t animation_timer;
 static uint16_t animate = 0;
 void animate_backlight(uint16_t delta);
+uint16_t sat_add(uint16_t a, uint16_t b);
+uint16_t sat_sub(uint16_t a, uint16_t b);
 
 void matrix_init_user(void) {
   animation_timer = timer_read();
@@ -161,6 +163,21 @@ void animate_backlight(uint16_t delta) {
   uint16_t brightness = brght_inf + ((interp_mu * (brght_sup - brght_inf)) >> 8);
 
   backlight_adjust(brightness);
+}
+
+/* saturation arithmetic
+ * http://locklessinc.com/articles/sat_arithmetic/
+ */
+uint16_t sat_add(uint16_t a, uint16_t b) {
+  uint16_t result = a + b;
+  result |= -(result < a);
+  return result;
+}
+
+uint16_t sat_sub(uint16_t a, uint16_t b) {
+  uint16_t result = a - b;
+  result &= -(result <= a);
+  return result;
 }
 
 const uint16_t PROGMEM backlight_gamma[] = { // values generated using gamma.rb
