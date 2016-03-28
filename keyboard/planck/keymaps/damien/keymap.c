@@ -127,7 +127,9 @@ void matrix_scan_user(void) { // called approx. every millisecond
 }
 
 void process_action_user(keyrecord_t *record) {
-  animate = sat_sub(animate, 4096);
+  if (record->event.pressed) {
+    animate = sat_sub(animate, 4096);
+  }
 }
 
 #define CHANNEL OCR1C
