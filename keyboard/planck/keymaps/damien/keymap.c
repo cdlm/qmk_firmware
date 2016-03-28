@@ -107,7 +107,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
 
 extern const uint16_t backlight_gamma[]; // values below
 static uint16_t animation_timer;
-static uint16_t animate = 0;
+static uint16_t animate = 0; // TODO: initialize from backlight level setting
 void animate_backlight(uint16_t delta);
 uint16_t sat_add(uint16_t a, uint16_t b);
 uint16_t sat_sub(uint16_t a, uint16_t b);
@@ -128,7 +128,7 @@ void matrix_scan_user(void) { // called approx. every millisecond
 
 void process_action_user(keyrecord_t *record) {
   if (record->event.pressed) {
-    animate = sat_sub(animate, 4096);
+    animate = sat_sub(animate, 1 << 13);
   }
 }
 
