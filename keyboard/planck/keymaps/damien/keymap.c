@@ -152,7 +152,7 @@ void step_ramp(uint16_t *animated_value, uint16_t delta) {
 // asymptotically converge towards target value
 void step_converge(uint16_t *value, uint16_t delta) {
   // TODO: use current backlight level as target
-  uint16_t decay = (0xffff - *value) >> 6 + 1;
+  uint16_t decay = ((0xffff - *value) >> 6) + 1;
   *value = sat_add(*value, decay);
 }
 

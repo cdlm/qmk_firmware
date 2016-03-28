@@ -5,6 +5,7 @@
 #include "keymap_common.h"
 #ifdef BACKLIGHT_ENABLE
 	#include "backlight.h"
+void backlight_init_ports(void);
 #endif
 #ifdef RGBLIGHT_ENABLE
   #include "rgblight.h"
